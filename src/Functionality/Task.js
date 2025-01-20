@@ -1,38 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { sendTaskApi } from "../API/Task";
+import { getTaskApi, sendTaskApi } from "../API/Task";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import DisplayTask from "./DisplayTask";
+import { setTasks } from "../Slice/TaskSlice";
 
 const Task = () => {
   const navigate = useNavigate();
   //Selector
   const { user } = useSelector((state) => state.userProfile) || {};
   const { tasks } = useSelector((state) => state.task) || {};
+  const userId = user._id;
   //states
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     status: "pending",
   });
+  useEffect(() => {
+    const fetchTasks = async () => {
+      if (!tasks) {
+        try {
+          const response = await getTaskApi(userId); // Assuming getTaskApi returns a promise
+          console.log(response.data.data);
+          setTasks(response.data.data); // Update state with the response
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+        }
+      }
+    };
 
+    fetchTasks(); // Call the async function
+  }, [userId, tasks]);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleAddTask = async () => {
-    console.log(formData);
-    const response = await sendTaskApi({ ...formData, userId: user._id });
-    if (response.status === 201) {
-      toast.success(response.data.message);
-      // navigate("/Task");
-      setFormData({ title: "", description: "", status: "pending" });
-    }
-    if (response.status === 400) {
-      toast.error(response.data.message);
-    }
-    if (response.status === 500) {
-      toast.error(response.data.message);
+    try {
+      console.log(formData);
+      const response = await sendTaskApi({ ...formData, userId });
+      if (response.status === 201) {
+        toast.success(response.data.message);
+        // navigate("/Task");
+        setFormData({ title: "", description: "", status: "pending" });
+      }
+      if (response.status === 400) {
+        toast.error(response.data.message);
+      }
+      if (response.status === 500) {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
   return (

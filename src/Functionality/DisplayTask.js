@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { getTaskApi } from "../API/Task";
+import { useSelector } from "react-redux";
 
 const DisplayTask = () => {
+  const { tasks } = useSelector((state) => state.task) || {};
   return (
     <div className="overflow-x-auto">
       <table className="table">

@@ -15,9 +15,9 @@ export const sendTaskApi = (data) => {
     console.log(error);
   }
 };
-export const getTaskApi = () => {
+export const getTaskApi = (userId) => {
   try {
-    const response = axios.get(`${baseUrl}/api/getTask`, {
+    const response = axios.get(`${baseUrl}/api/getTask/${userId}`, {
       headers: {
         Authorization: token,
       },

@@ -11,7 +11,8 @@ const TasksSlice = createSlice({
   initialState,
   reducers: {
     setTasks: (state, action) => {
-      state.user = action.payload;
+      console.log(action.payload);
+      state.task = action.payload;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
