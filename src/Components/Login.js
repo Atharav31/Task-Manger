@@ -25,7 +25,7 @@ function Login() {
       console.log(response.data);
       if (response.status === 200) {
         toast.success(response.data.message);
-        navigate("/main");
+        navigate("/Task");
       }
       if (response.status === 400) {
         toast.error(response.data.message);

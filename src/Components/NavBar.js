@@ -1,7 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+  const navigate = useNavigate();
+  const [login, setLogin] = useState(true);
+  const token = localStorage.getItem("token");
+  if (token) {
+    setLogin(true);
+  }
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [login]);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+
+    setLogin(false);
+    navigate("/");
+  };
   return (
     <div className="navbar bg-base-100 sticky top-0 z-50">
       <div className="flex-1">
@@ -37,7 +54,11 @@ const NavBar = () => {
               <Link>Settings</Link>
             </li>
             <li>
-              <Link>Logout</Link>
+              {login ? (
+                <button onClick={handleLogout}>Logout</button>
+              ) : (
+                <Link to="/login">Login</Link>
+              )}
             </li>
           </ul>
         </div>
