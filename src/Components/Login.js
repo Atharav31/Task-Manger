@@ -3,9 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { loginApi } from "../API/Users";
+import { setUserProfile } from "../Slice/UserProfile";
+import { useDispatch } from "react-redux";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     emailOrUsername: "",
     password: "",
@@ -25,6 +28,8 @@ function Login() {
       console.log(response.data);
       if (response.status === 200) {
         toast.success(response.data.message);
+        dispatch(setUserProfile(response.data.data));
+
         navigate("/Task");
       }
       if (response.status === 400) {
