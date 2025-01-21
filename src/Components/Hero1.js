@@ -1,7 +1,9 @@
 import React from "react";
 import Login from "./Login";
+import { useNavigate } from "react-router-dom";
 
 const Hero1 = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -16,11 +18,19 @@ const Hero1 = () => {
           <div className="max-w-md">
             <h1 className="mb-5 text-5xl font-bold">Hello there</h1>
             <p className="mb-5">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
+              Task Manager is a simple yet powerful tool to help you manage your
+              tasks. With an easy-to-use interface, you can quickly add, edit
+              and delete tasks. You can also filter tasks by status and search
+              for specific tasks.
             </p>
-            <button className="btn btn-primary">Get Started</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                navigate("/signup");
+              }}
+            >
+              Get Started
+            </button>
           </div>
         </div>
       </div>
