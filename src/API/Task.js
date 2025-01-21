@@ -1,12 +1,18 @@
 import axios from "axios";
 
 const baseUrl = `${process.env.REACT_APP_API_URL}`;
-const token = `Bearer ${localStorage.getItem("token")}`;
+const token = localStorage.getItem("token");
+
+if (!token) {
+  console.log("No token found in localStorage");
+  // Handle token absence (e.g., redirect to login page)
+}
+
 export const sendTaskApi = (data) => {
   try {
     const response = axios.post(`${baseUrl}/api/createTask`, data, {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       withCredentials: true,
     });
@@ -15,11 +21,12 @@ export const sendTaskApi = (data) => {
     console.log(error);
   }
 };
+
 export const getTaskApi = (userId) => {
   try {
     const response = axios.get(`${baseUrl}/api/getTask/${userId}`, {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       withCredentials: true,
     });
@@ -36,18 +43,18 @@ export const updateTaskApi = async (taskData, token) => {
       taskData,
       {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
         withCredentials: true,
       }
     );
-    return response.data; // Return the data from the response
+    return response.data;
   } catch (error) {
     console.error(
       "Error updating task:",
       error.response?.data || error.message
     );
-    throw error; // Throw error to handle it where this function is called
+    throw error;
   }
 };
 
@@ -55,16 +62,16 @@ export const deleteTaskApi = async (taskId, token) => {
   try {
     const response = await axios.delete(`${baseUrl}/api/DeleteTask/${taskId}`, {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       withCredentials: true,
     });
-    return response.data; // Return the data from the response
+    return response.data;
   } catch (error) {
     console.error(
       "Error deleting task:",
       error.response?.data || error.message
     );
-    throw error; // Throw error to handle it where this function is called
+    throw error;
   }
 };
