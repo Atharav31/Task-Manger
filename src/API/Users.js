@@ -2,7 +2,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const baseUrl = `${process.env.REACT_APP_API_URL}`;
-const token = `Bearer ${localStorage.getItem("token")}`;
+const token = localStorage.getItem("token");
+
+if (!token) {
+  console.log("No token found in localStorage");
+  // Handle token absence (e.g., redirect to login page)
+}
 export const SignUpApi = (data) => {
   try {
     const response = axios.post(`${baseUrl}/api/signup`, data);
@@ -29,7 +34,7 @@ export const getProfileApi = (userId) => {
   try {
     const response = axios.post(`${baseUrl}/api/profile/${userId}`, {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       withCredentials: true,
     });
@@ -44,7 +49,7 @@ export const logoutApi = () => {
   try {
     const response = axios.get(`${baseUrl}/api/logout`, {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       withCredentials: true,
     });
@@ -59,7 +64,7 @@ export const updateProfileApi = async (formData) => {
   try {
     const response = await axios.put(`${baseUrl}/api/profile`, formData, {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       withCredentials: true,
     });

@@ -35,8 +35,14 @@ export const getTaskApi = (userId) => {
     console.log(error);
   }
 };
+export const updateTaskApi = async (taskData) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.log("No token found. Cannot make the request.");
+    // Handle no token case (e.g., redirect to login)
+    return;
+  }
 
-export const updateTaskApi = async (taskData, token) => {
   try {
     const response = await axios.put(
       `${baseUrl}/api/UpdateTask/${taskData._id}`,
@@ -58,7 +64,14 @@ export const updateTaskApi = async (taskData, token) => {
   }
 };
 
-export const deleteTaskApi = async (taskId, token) => {
+export const deleteTaskApi = async (taskId) => {
+  const token = localStorage.getItem("token"); // Adjust token retrieval if needed
+  if (!token) {
+    console.error("Token is missing. Unable to delete task.");
+    // Optionally handle token absence (e.g., redirect to login)
+    return;
+  }
+
   try {
     const response = await axios.delete(`${baseUrl}/api/DeleteTask/${taskId}`, {
       headers: {
