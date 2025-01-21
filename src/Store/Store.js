@@ -1,11 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userProfileReducer from "../Slice/UserProfile"; // Import the userProfileReducer
-import TasksSliceReducer from "../Slice/TaskSlice"; // Import the TasksSliceReducer
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // Defaults to localStorage
+import userProfileReducer from "../Slice/UserProfile";
+import TasksSliceReducer from "../Slice/TaskSlice";
+
+// Redux Persist configuration
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+// Combine reducers and apply persistence
+const rootReducer = {
+  userProfile: persistReducer(persistConfig, userProfileReducer),
+  TasksSlice: persistReducer(persistConfig, TasksSliceReducer),
+};
+
 const store = configureStore({
-  reducer: {
-    userProfile: userProfileReducer,
-    TasksSlice: TasksSliceReducer,
-  },
+  reducer: rootReducer,
 });
 
+export const persistor = persistStore(store);
 export default store;

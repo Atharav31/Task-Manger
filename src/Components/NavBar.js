@@ -5,14 +5,15 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [login, setLogin] = useState(true);
   const token = localStorage.getItem("token");
-  if (token) {
-    setLogin(true);
-  }
+
   useEffect(() => {
-    if (!token) {
+    console.log(token);
+    if (token) {
+      setLogin(true);
+    } else {
       navigate("/login");
     }
-  }, [login]);
+  }, [token]);
   const handleLogout = () => {
     localStorage.removeItem("token");
 

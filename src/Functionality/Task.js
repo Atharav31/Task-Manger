@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { getTaskApi, sendTaskApi } from "../API/Task";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DisplayTask from "./DisplayTask";
-import { setTasks } from "../Slice/TaskSlice";
+import { addTask, setTasks } from "../Slice/TaskSlice";
 
 const Task = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   //Selector
   const { user } = useSelector((state) => state.userProfile) || {};
   const { tasks } = useSelector((state) => state.task) || {};
-  const userId = user._id;
+  const userId = user?._id;
   //states
   const [formData, setFormData] = useState({
     title: "",
@@ -24,15 +25,16 @@ const Task = () => {
         try {
           const response = await getTaskApi(userId); // Assuming getTaskApi returns a promise
           console.log(response.data.data);
-          setTasks(response.data.data); // Update state with the response
+          dispatch(setTasks(response.data.data)); // Dispatch action
         } catch (error) {
           console.error("Error fetching tasks:", error);
         }
       }
     };
 
-    fetchTasks(); // Call the async function
-  }, [userId, tasks]);
+    fetchTasks();
+  }, [dispatch, userId, tasks]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -40,6 +42,7 @@ const Task = () => {
     try {
       console.log(formData);
       const response = await sendTaskApi({ ...formData, userId });
+      dispatch(addTask(response.data.data));
       if (response.status === 201) {
         toast.success(response.data.message);
         // navigate("/Task");

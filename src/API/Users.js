@@ -40,3 +40,17 @@ export const getProfileApi = (userId) => {
     toast.error(error.response.data.message);
   }
 };
+export const logoutApi = () => {
+  try {
+    const response = axios.get(`${baseUrl}/api/logout`, {
+      headers: {
+        Authorization: token,
+      },
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    toast.error(error.response.data.message);
+  }
+};

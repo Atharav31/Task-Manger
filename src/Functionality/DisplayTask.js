@@ -1,43 +1,76 @@
-import React, { useEffect } from "react";
-import { getTaskApi } from "../API/Task";
-import { useSelector } from "react-redux";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa"; // Font Awesome Icons
 
 const DisplayTask = () => {
-  const { tasks } = useSelector((state) => state.task) || {};
+  const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.TasksSlice.task) || [];
+
+  const handleEdit = (id) => {
+    console.log(`Edit Task ID: ${id}`);
+    // Add logic for editing, e.g., open modal or navigate
+  };
+
+  const handleDelete = (id) => {
+    console.log(`Delete Task ID: ${id}`);
+    // Add logic for deleting, e.g., dispatch delete action
+  };
+
+  const handleStatusUpdate = (id, currentStatus) => {
+    console.log(`Update Status for Task ID: ${id}`);
+    const updatedStatus = currentStatus === "pending" ? "completed" : "pending";
+    // Dispatch an action to update the status
+    // dispatch({
+    //   type: "UPDATE_TASK_STATUS", // Replace with your Redux action type
+    //   payload: { id, status: updatedStatus },
+    // });
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="table">
-        {/* head */}
+        {/* Table Head */}
         <thead>
           <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
+            <th>#</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
+        {/* Table Body */}
         <tbody>
-          {/* row 1 */}
-          <tr>
-            <th>1</th>
-            <td>Cy Ganderton</td>
-            <td>Quality Control Specialist</td>
-            <td>Blue</td>
-          </tr>
-          {/* row 2 */}
-          <tr className="hover">
-            <th>2</th>
-            <td>Hart Hagerty</td>
-            <td>Desktop Support Technician</td>
-            <td>Purple</td>
-          </tr>
-          {/* row 3 */}
-          <tr>
-            <th>3</th>
-            <td>Brice Swyre</td>
-            <td>Tax Accountant</td>
-            <td>Red</td>
-          </tr>
+          {tasks?.length > 0 ? (
+            tasks.map((task, index) => (
+              <tr key={task?._id}>
+                <th>{index + 1}</th>
+                <td>{task.title}</td>
+                <td>{task.description}</td>
+                <td>{task.status} </td>
+                <td>
+                  <button
+                    className="btn btn-sm btn-primary mr-2"
+                    onClick={() => handleEdit(task?._id)}
+                  >
+                    <FaEdit title="Edit Task" />
+                  </button>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDelete(task?._id)}
+                  >
+                    <FaTrash title="Delete Task" />
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" className="text-center">
+                No tasks available.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

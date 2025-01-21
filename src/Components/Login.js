@@ -29,7 +29,7 @@ function Login() {
       if (response.status === 200) {
         toast.success(response.data.message);
         dispatch(setUserProfile(response.data.data));
-
+        localStorage.setItem("token", response.data.token);
         navigate("/Task");
       }
       if (response.status === 400) {
