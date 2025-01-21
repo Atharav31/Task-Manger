@@ -20,7 +20,7 @@ The frontend of this application is built using **React.js**. It provides a user
 
 1. Clone the repository:
    ```bash
-   git clone <frontend-repo-url>
+   git clone https://github.com/Atharav31/Task-Manger.git
    cd frontend
    ```
 2. Install dependencies:
