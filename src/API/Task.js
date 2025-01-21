@@ -36,7 +36,7 @@ export const updateTaskApi = async (taskData, token) => {
       taskData,
       {
         headers: {
-          Authorization: `Bearer ${token}`, // Ensure token is prefixed with 'Bearer'
+          Authorization: token,
         },
         withCredentials: true,
       }
@@ -55,7 +55,7 @@ export const deleteTaskApi = async (taskId, token) => {
   try {
     const response = await axios.delete(`${baseUrl}/api/DeleteTask/${taskId}`, {
       headers: {
-        Authorization: `Bearer ${token}`, // Ensure token is prefixed with 'Bearer'
+        Authorization: token,
       },
       withCredentials: true,
     });
