@@ -20,6 +20,7 @@ const Task = () => {
     status: "pending",
   });
   useEffect(() => {
+    console.log("fetching tasks", userId);
     const fetchTasks = async () => {
       if (!tasks) {
         try {
