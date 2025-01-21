@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./Components/SignUp";
 import Login from "./Components/Login";
 import Task from "./Functionality/Task";
+import Profile from "./Components/Profile";
 function App() {
   return (
     <>
@@ -17,6 +18,8 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/task" element={<Task />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
         <Footer />
       </BrowserRouter>

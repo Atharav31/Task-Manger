@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const [login, setLogin] = useState(true);
   const token = localStorage.getItem("token");
-
+  const { user } = useSelector((state) => state.userProfile) || {};
   useEffect(() => {
     console.log(token);
     if (token) {
@@ -23,9 +24,17 @@ const NavBar = () => {
   return (
     <div className="navbar bg-base-100 sticky top-0 z-50">
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">
-          Task Manager
-        </Link>
+        {login ? (
+          user?.username && (
+            <Link to="/task" className="btn btn-ghost text-xl">
+              {user?.username}
+            </Link>
+          )
+        ) : (
+          <Link to="/" className="btn btn-ghost text-xl">
+            Task Manager
+          </Link>
+        )}
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
@@ -45,12 +54,14 @@ const NavBar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
-            <li>
-              <Link className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </Link>
-            </li>
+            {login && (
+              <li>
+                <Link to="/profile" className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </Link>
+              </li>
+            )}
 
             <li>
               {login ? (

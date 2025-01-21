@@ -54,3 +54,18 @@ export const logoutApi = () => {
     toast.error(error.response.data.message);
   }
 };
+
+export const updateProfileApi = async (formData) => {
+  try {
+    const response = await axios.put(`${baseUrl}/api/profile`, formData, {
+      headers: {
+        Authorization: token,
+      },
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    toast.error(error.response.data.message);
+  }
+};

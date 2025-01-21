@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 import { updateTask, deleteTask } from "../Slice/TaskSlice"; // Replace with your actual Redux actions
+import { toast } from "react-toastify";
 
 const DisplayTask = () => {
   const dispatch = useDispatch();
@@ -9,28 +10,43 @@ const DisplayTask = () => {
   const [editTaskId, setEditTaskId] = useState(null);
   const [editFormData, setEditFormData] = useState({});
 
+  // Handle Edit Click
   const handleEditClick = (task) => {
     setEditTaskId(task._id);
     setEditFormData({ ...task });
   };
 
+  // Handle Input Changes
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveClick = () => {
-    dispatch(updateTask(editFormData)); // Dispatch update action
-    setEditTaskId(null); // Exit edit mode
+  // Handle Save Click
+  const handleSaveClick = async () => {
+    try {
+      const response = await dispatch(updateTask(editFormData)).unwrap(); // Use .unwrap() to handle asyncThunk response directly
+      toast.success(response.message || "Task updated successfully!");
+      setEditTaskId(null); // Exit edit mode
+    } catch (error) {
+      toast.error(error.message || "Failed to update task.");
+    }
   };
 
+  // Handle Cancel Click
   const handleCancelClick = () => {
     setEditTaskId(null); // Exit edit mode without saving
   };
 
-  const handleDelete = (id) => {
+  // Handle Delete
+  const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this task?")) {
-      dispatch(deleteTask(id)); // Dispatch delete action
+      try {
+        const response = await dispatch(deleteTask(id)).unwrap(); // Use .unwrap() for better error handling
+        toast.success(response.message || "Task deleted successfully!");
+      } catch (error) {
+        toast.error(error.message || "Failed to delete task.");
+      }
     }
   };
 
